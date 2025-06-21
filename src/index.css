@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/inter";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,6 +79,12 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
+
+  --custom-blue: #324054;
+
+  --sidebar-link: #000000;
+  --sidebar-link-active: #2d68fe;
+  --sidebar-link-hover-bg: #eff6ff;
 }
 
 .dark {

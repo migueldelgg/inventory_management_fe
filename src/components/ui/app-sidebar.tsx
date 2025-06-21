@@ -5,26 +5,42 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="p-4 font-bold">Minha App</div>
+        <div className="p-4 text-2xl font-bold text-[var(--custom-blue)]">Cataline</div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <ul>
             <li>
-              <Link to="/fornecedores" className="block p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <NavLink
+                to="/fornecedores"
+                className={({ isActive }) =>
+                  `block p-2 rounded text-[16px] font-normal
+                   ${isActive
+                    ? 'text-[var(--sidebar-link-active)] bg-[var(--sidebar-link-hover-bg)]'
+                    : 'text-[var(--sidebar-link)] hover:bg-[var(--sidebar-link-hover-bg)]'}`
+                }
+              >
                 Fornecedores
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/produtos" className="block p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+              <NavLink
+                to="/produtos"
+                className={({ isActive }) =>
+                  `block p-2 rounded text-[16px] font-normal
+                   ${isActive
+                    ? 'text-[var(--sidebar-link-active)] bg-[var(--sidebar-link-hover-bg)]'
+                    : 'text-[var(--sidebar-link)] hover:bg-[var(--sidebar-link-hover-bg)]'}`
+                }
+              >
                 Produtos
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </SidebarGroup>
