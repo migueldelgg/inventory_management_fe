@@ -1,7 +1,7 @@
-import { Button } from "./components/ui/button"
+import Layout from "./app/layout"
 
 function App() {
-  return <Button variant="destructive">Destructive</Button>
+  return <Layout children={undefined}></Layout>
 }
 
 export default App
