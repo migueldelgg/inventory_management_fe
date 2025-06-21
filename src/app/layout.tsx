@@ -1,14 +1,17 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "../components/ui/app-sidebar"
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { Outlet } from "react-router-dom"
+
+export default function Layout() {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
+      <div className="flex">
+        <AppSidebar />
+        <main className="flex-1 p-4">
+          <Outlet />
+        </main>
+      </div>
     </SidebarProvider>
   )
 }
