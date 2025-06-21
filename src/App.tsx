@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Layout from "./app/layout"
-import Fornecedores from "./pages/fornecedores"
-import Produtos from "./pages/produtos"
+import Fornecedores from "./pages/fornecedores/fornecedores"
+import Produtos from "./pages/produtos/produtos"
 
 function App() {
   return (

@@ -1,53 +1,56 @@
+import { useLocation } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { NavLink } from "react-router-dom"
+
+const menu_items = [
+  {
+    title: "Fornecedores",
+    url: "/fornecedores",
+  },
+  {
+    title: "Produtos",
+    url: "/produtos",
+  },
+]
 
 export function AppSidebar() {
+  const location = useLocation()
+
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="p-4 text-2xl font-bold text-[var(--custom-blue)]">Cataline</div>
-      </SidebarHeader>
+    <Sidebar variant="sidebar">
       <SidebarContent>
-        <SidebarGroup>
-          <ul>
-            <li>
-              <NavLink
-                to="/fornecedores"
-                className={({ isActive }) =>
-                  `block p-2 rounded text-[16px] font-normal
-                   ${isActive
-                    ? 'text-[var(--sidebar-link-active)] bg-[var(--sidebar-link-hover-bg)]'
-                    : 'text-[var(--sidebar-link)] hover:bg-[var(--sidebar-link-hover-bg)]'}`
-                }
-              >
-                Fornecedores
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/produtos"
-                className={({ isActive }) =>
-                  `block p-2 rounded text-[16px] font-normal
-                   ${isActive
-                    ? 'text-[var(--sidebar-link-active)] bg-[var(--sidebar-link-hover-bg)]'
-                    : 'text-[var(--sidebar-link)] hover:bg-[var(--sidebar-link-hover-bg)]'}`
-                }
-              >
-                Produtos
-              </NavLink>
-            </li>
-          </ul>
-        </SidebarGroup>
+        <SidebarHeader>
+          <div className="p-4 text-2xl font-bold text-[var(--custom-blue)]">Cataline</div>
+        </SidebarHeader>
+        <SidebarMenu className="p-3.5">
+          {menu_items.map((item) => {
+            const isActive = location.pathname === item.url
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <a
+                    href={item.url}
+                    className={`block p-2 rounded text-[16px] font-normal
+                      ${isActive
+                        ? "text-[var(--sidebar-link-active)] bg-[var(--sidebar-link-hover-bg)]"
+                        : "text-[var(--sidebar-link)] hover:bg-[var(--sidebar-link-hover-bg)]"
+                      }
+                    `}
+                  >
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
+        </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="p-4 text-sm">© 2025</div>
-      </SidebarFooter>
     </Sidebar>
   )
 }
