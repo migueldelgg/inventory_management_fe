@@ -8,5 +8,3 @@ export type Suppliers = {
   isActive: boolean;
   mainContact: string;
 };
-
-export const products: Suppliers[] = [];

@@ -2,17 +2,7 @@ import { Copy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import type { ColumnDef } from "@tanstack/react-table"
-
-type Suppliers = {
-  id: string
-  companyName: string
-  cnpj: string
-  address: string
-  phone: string
-  email: string
-  isActive: boolean
-  mainContact: string
-}
+import type { Suppliers } from "@/http/SuppliersSchema"
 
 export const columns: ColumnDef<Suppliers>[] = [
   {
