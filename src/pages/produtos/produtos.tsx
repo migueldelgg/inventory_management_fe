@@ -1,12 +1,34 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormModal } from "../../components/modal/index"
 import Header from "@/components/own/Header"
 import DemoPage from "@/app/products/page"
 import type { Products } from "@/http/ProductSchema"
-import { deleteProductById, updateProductById } from "@/handlers/productHandlers"
+import { createProduct, deleteProductById, updateProductById } from "@/handlers/productHandlers"
+
+// Função para buscar produtos (copiada e adaptada)
+async function getData(): Promise<Products[]> {
+  console.log("Chamando API...")
+
+  const res = await fetch("http://localhost:8080/products/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  if (!res.ok) {
+    console.error("Erro na resposta da API:", res.status)
+    throw new Error("Erro ao buscar produtos")
+  }
+
+  const json = await res.json()
+  console.log("Dados recebidos:", json)
+  return json as Products[]
+}
 
 // === Field Maps ===
-const createProductFieldMap: Record<string, keyof Products> = {
+const createProductFieldMap: Record<string, keyof Omit<Products, "id">> = {
   "Nome": "name",
   "Código de Barras": "barCode",
   "Descrição": "description",
@@ -61,50 +83,81 @@ const updateProductVisibleFields = Object.keys(updateProductFieldMap).reduce((ac
   return acc
 }, {} as Record<string, string>)
 
+function removeEmptyFields<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(obj).filter(([_, value]) => {
+      if (typeof value === "string") return value.trim() !== ""
+      if (typeof value === "number") return !isNaN(value)
+      return value !== undefined && value !== null
+    })
+  ) as Partial<T>
+}
+
 export default function Produtos() {
+  const [data, setData] = useState<Products[]>([])
+  const [loading, setLoading] = useState(true)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const [updateModalVisible, setUpdateModalVisible] = useState(false)
+
+  async function reloadData() {
+    setLoading(true)
+    try {
+      const produtos = await getData()
+      setData(produtos)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Carregar dados ao montar
+  useEffect(() => {
+    reloadData()
+  }, [])
 
   const handleAddProduct = () => setModalVisible(true)
   const handleDeleteProduct = () => setDeleteModalVisible(true)
   const handleUpdateProduct = () => setUpdateModalVisible(true)
 
-  const handleSubmit = async (data: Record<string, string>) => {
+  const handleSubmit = async (formData: Record<string, string>) => {
     try {
-      const apiData = transformFormData<Products>(data, createProductFieldMap)
-
-      await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(apiData),
-      })
-
-      // sucesso, recarregar dados, etc
+      const apiData = transformFormData<Omit<Products, "id">>(formData, createProductFieldMap)
+      await createProduct(apiData)
+      console.log("Produto criado com sucesso")
+      setModalVisible(false)
+      await reloadData() // Atualiza a tabela
     } catch (err) {
-      console.error("Erro ao salvar:", err)
+      console.error("Erro ao criar produto:", err)
     }
   }
 
-  const handleSubmitDelete = async (data: Record<string, string>) => {
+  const handleDelete = async (formData: Record<string, string>) => {
     try {
-      const apiData = transformFormData<Products>(data, deleteProductFieldMap)
+      const apiData = transformFormData<Products>(formData, deleteProductFieldMap)
       await deleteProductById(apiData.id)
-      // sucesso, recarregar dados, etc
+      console.log("Produto deletado com sucesso")
+      setDeleteModalVisible(false)
+      await reloadData() // Atualiza a tabela
     } catch (err) {
       console.error("Erro ao deletar:", err)
     }
   }
 
-  const handleSubmitUpdate = async (data: Record<string, string>) => {
+  const handleSubmitUpdate = async (formData: Record<string, string>) => {
     try {
-      const apiData = transformFormData<Products>(data, updateProductFieldMap)
+      const apiData = transformFormData<Products>(formData, updateProductFieldMap)
       const { id, ...rest } = apiData
-
-      await updateProductById(id, rest)
-      // sucesso, recarregar dados, etc
+      const filtered = removeEmptyFields(rest)
+      await updateProductById(id, filtered)
+      console.log("Produto atualizado com sucesso")
+      setUpdateModalVisible(false)
+      await reloadData() // Atualiza a tabela
     } catch (err) {
-      console.error("Erro ao atualizar:", err)
+      console.error("Erro ao atualizar produto:", err)
     }
   }
 
@@ -119,12 +172,12 @@ export default function Produtos() {
         updateText="Atualizar produto"
         onUpdateClick={handleUpdateProduct}
         realodText="Recarregar tabela"
-        onRealodClick={() => { }}
+        onRealodClick={reloadData} // opção para recarregar manualmente
       />
 
-      <DemoPage />
+      <DemoPage data={data} loading={loading} />
 
-      {/* Modal de criação */}
+      {/* Modais */}
       <FormModal
         visible={modalVisible}
         title="Novo Produto"
@@ -132,17 +185,14 @@ export default function Produtos() {
         onClose={() => setModalVisible(false)}
         onSubmit={handleSubmit}
       />
-
-      {/* Modal de exclusão */}
       <FormModal
         visible={deleteModalVisible}
         title="Excluir Produto"
         submitLabel="Excluir"
         fields={deleteProductVisibleFields}
         onClose={() => setDeleteModalVisible(false)}
-        onSubmit={handleSubmitDelete}
+        onSubmit={handleDelete}
       />
-
       <FormModal
         visible={updateModalVisible}
         title="Atualizar Produto"
