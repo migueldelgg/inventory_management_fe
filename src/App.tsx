@@ -12,6 +12,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="fornecedores" element={<Fornecedores />} />
             <Route path="produtos" element={<Produtos />} />
+            <Route path="produtos-fornecedores" element={<Produtos />} />
           </Route>
         </Routes>
       </BrowserRouter>

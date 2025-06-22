@@ -17,6 +17,10 @@ const menu_items = [
     title: "Produtos",
     url: "/produtos",
   },
+  {
+    title: "Produtos/Fornecedores",
+    url: "/produtos-fornecedores",
+  },
 ]
 
 export function AppSidebar() {
