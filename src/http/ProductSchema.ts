@@ -1,5 +1,6 @@
 export type Products = {
   id: string;
+  name: string;
   barCode: string;
   description: string;
   stockQuantity: number;
@@ -12,6 +13,7 @@ export type Products = {
 export const products: Products[] = [
   {
     id: "1a2b3c4d",
+    name: "7891000055123",
     barCode: "7891000055123",
     description: "Arroz Branco Tipo 1 - 5kg",
     stockQuantity: 120,
@@ -22,6 +24,7 @@ export const products: Products[] = [
   },
   {
     id: "2b3c4d5e",
+    name: "7891000055123",
     barCode: "7891000023445",
     description: "Detergente Líquido Neutro - 500ml",
     stockQuantity: 85,
@@ -32,6 +35,7 @@ export const products: Products[] = [
   },
   {
     id: "3c4d5e6f",
+    name: "7891000055123",
     barCode: "7891000076543",
     description: "Chocolate ao Leite 90g",
     stockQuantity: 45,
@@ -42,6 +46,7 @@ export const products: Products[] = [
   },
   {
     id: "4d5e6f7g",
+    name: "7891000055123",
     barCode: "7891000088888",
     description: "Leite Integral 1L",
     stockQuantity: 200,
@@ -52,6 +57,7 @@ export const products: Products[] = [
   },
   {
     id: "5e6f7g8h",
+    name: "7891000055123",
     barCode: "7891000032123",
     description: "Sabonete em Barra Neutro - 90g",
     stockQuantity: 300,
