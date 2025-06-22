@@ -3,71 +3,41 @@ import { columns } from "./columns"
 import { DataTable } from "./data-table"
 import { useEffect, useState } from "react"
 
-function getData(): Promise<Products[]> {
-  return Promise.resolve([
-    {
-      id: "1a2b3c4d",
-      barCode: "7891000055123",
-      description: "Arroz Branco Tipo 1 - 5kg",
-      stockQuantity: 120,
-      category: "Alimentos",
-      isActive: true,
-      productValidity: "2025-03-10",
-      imgUrl: "https://example.com/images/arroz.jpg",
-    },
-    {
-      id: "2b3c4d5e",
-      barCode: "7891000023445",
-      description: "Detergente Líquido Neutro - 500ml",
-      stockQuantity: 85,
-      category: "Limpeza",
-      isActive: true,
-      productValidity: "2026-01-15",
-      imgUrl: "https://example.com/images/detergente.jpg",
-    },
-    {
-      id: "3c4d5e6f",
-      barCode: "7891000076543",
-      description: "Chocolate ao Leite 90g",
-      stockQuantity: 45,
-      category: "Doces",
-      isActive: false,
-      productValidity: "2024-10-20",
-      imgUrl: "https://example.com/images/chocolate.jpg",
-    },
-    {
-      id: "4d5e6f7g",
-      barCode: "7891000088888",
-      description: "Leite Integral 1L",
-      stockQuantity: 200,
-      category: "Bebidas",
-      isActive: true,
-      productValidity: "2025-01-01",
-      imgUrl: "https://example.com/images/leite.jpg",
-    },
-    {
-      id: "5e6f7g8h",
-      barCode: "7891000032123789100003212378910000321237891000032123",
-      description: "Sabonete em Barra Neutro - 90g",
-      stockQuantity: 300,
-      category: "Higiene",
-      isActive: true,
-      productValidity: "2026-06-30",
-      imgUrl: "https://example.com/images/sabonete.jpg",
+async function getData(): Promise<Products[]> {
+  console.log("Chamando API...")
+
+  const res = await fetch("http://localhost:8080/products/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
     }
-  ])
+  })
+
+  if (!res.ok) {
+    console.error("Erro na resposta da API:", res.status)
+    throw new Error("Erro ao buscar produtos")
+  }
+
+  const json = await res.json()
+  console.log("Dados recebidos:", json)
+  return json as Products[]
 }
 
 export default function DemoPage() {
   const [data, setData] = useState<Products[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getData().then(setData)
+    getData()
+      .then(setData)
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false))
   }, [])
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      {loading ? <p>Carregando produtos...</p> : <DataTable columns={columns} data={data} />}
     </div>
   )
 }
