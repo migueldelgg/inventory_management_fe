@@ -1,18 +1,24 @@
 import Header from "../../components/own/Header"
 import DemoPage from "@/app/products/page"
-import { useState } from "react"
 
 export default function Produtos() {
-  // Aqui você poderia passar o estado dos selecionados de um contexto ou prop real
-  // Vou colocar um exemplo com estado simulado
-  const [selectedCount] = useState(0)
 
   const handleAddProduct = () => {
     console.log("Adicionar produto")
     // Sua lógica aqui
   }
 
+  const handleUpdateProducts = () => {
+    console.log("Adicionar produto")
+    // Sua lógica aqui
+  }
+
   const handleDeleteProducts = () => {
+    console.log("Deletar selecionados")
+    // Sua lógica para deletar os itens selecionados
+  }
+
+  const handleRealodProducts = () => {
     console.log("Deletar selecionados")
     // Sua lógica para deletar os itens selecionados
   }
@@ -23,9 +29,12 @@ export default function Produtos() {
         title="Produtos"
         actionText="+ Adicionar produto"
         onActionClick={handleAddProduct}
-        deleteText="Deletar selecionados"
+        deleteText="Excluir produto"
         onDeleteClick={handleDeleteProducts}
-        disabledDelete={selectedCount === 0}
+        updateText="Atualizar produto"
+        onUpdateClick={handleUpdateProducts}
+        realodText="Recarregar tabela"
+        onRealodClick={handleRealodProducts}
       />
       <DemoPage />
     </div>

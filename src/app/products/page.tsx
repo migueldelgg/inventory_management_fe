@@ -47,7 +47,7 @@ function getData(): Promise<Products[]> {
     },
     {
       id: "5e6f7g8h",
-      barCode: "7891000032123",
+      barCode: "7891000032123789100003212378910000321237891000032123",
       description: "Sabonete em Barra Neutro - 90g",
       stockQuantity: 300,
       category: "Higiene",
