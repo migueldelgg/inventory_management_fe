@@ -18,7 +18,7 @@ const menu_items = [
     url: "/produtos",
   },
   {
-    title: "Produtos/Fornecedores",
+    title: "Produtos por Fornecedor",
     url: "/produtos-fornecedores",
   },
 ]
