@@ -27,28 +27,24 @@ export default function Header({
   return (
     <div className="w-full px-6 py-6 flex items-center justify-between border-b">
       <h1 className="text-2xl font-semibold text-zinc-900">{title}</h1>
+
       <div className="flex gap-2">
-        {actionText && (
+        {actionText && onActionClick && (
           <Button className="h-9 px-4" onClick={onActionClick}>
             {actionText}
           </Button>
         )}
-        {actionText && (
-          <Button
-            className="h-9 px-4" onClick={onUpdateClick}>
+        {updateText && onUpdateClick && (
+          <Button className="h-9 px-4" onClick={onUpdateClick}>
             {updateText}
           </Button>
         )}
-        {deleteText && (
-          <Button
-            variant="destructive"
-            className="h-9 px-4"
-            onClick={onDeleteClick}
-          >
+        {deleteText && onDeleteClick && (
+          <Button variant="destructive" className="h-9 px-4" onClick={onDeleteClick}>
             {deleteText}
           </Button>
         )}
-        {actionText && (
+        {realodText && onRealodClick && (
           <Button
             className="h-9 px-4 bg-black text-white hover:bg-neutral-900"
             onClick={onRealodClick}
