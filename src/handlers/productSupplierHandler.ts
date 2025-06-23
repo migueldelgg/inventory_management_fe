@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ProductSupplierAssociation } from "@/http/SuppliersSchema copy";
 import { api } from "@/lib/axios";
 
 export async function linkSupplierToProduct(
@@ -65,7 +66,44 @@ export async function getSuppliersFromProductId(productId: string) {
     return response.data;
   } catch (error: any) {
     console.error(
-      `Erro ao buscar fornecedores associados ao produto ${productId} produto:`,
+      `Erro ao buscar fornecedores associados ao produto ${productId}`,
+      error?.response || error
+    );
+    alert(
+      `Erro ao buscar fornecedores associados ao produto:\n${JSON.stringify(
+        error?.response?.data || error,
+        null,
+        2
+      )}`
+    );
+    throw error;
+  }
+}
+
+export async function getAllProductsWithSuppliers(): Promise<
+  ProductSupplierAssociation[]
+> {
+  try {
+    console.log("getAllProductsWithSuppliers");
+    const response = await api.get("/products/suppliers");
+    const rawData = response.data as any[];
+
+    // Transforma o response em múltiplos ProductSupplierAssociation
+    const mapped: ProductSupplierAssociation[] = rawData.flatMap((product) =>
+      product.suppliers.map((supplier: any) => ({
+        productId: product.id,
+        productName: product.name,
+        category: product.category,
+        isActive: true, // se quiser vir do backend depois, troque por product.isActive
+        supplierId: supplier.id,
+        supplierName: supplier.companyName,
+      }))
+    );
+
+    return mapped;
+  } catch (error: any) {
+    console.error(
+      `Erro ao buscar fornecedores associados ao produto:`,
       error?.response || error
     );
     alert(

@@ -3,6 +3,7 @@ import Layout from "./app/layout"
 import Fornecedores from "./pages/fornecedores/fornecedores"
 import Produtos from "./pages/produtos/produtos"
 import { Toaster } from "sonner"
+import ProdutosFornecedores from "./pages/productsAndSuppliers/produtos-fornecedores"
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="fornecedores" element={<Fornecedores />} />
             <Route path="produtos" element={<Produtos />} />
-            <Route path="produtos-fornecedores" element={<Produtos />} />
+            <Route path="produtos-fornecedores" element={<ProdutosFornecedores />} />
           </Route>
         </Routes>
       </BrowserRouter>
